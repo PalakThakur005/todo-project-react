@@ -38,18 +38,20 @@ const Login = () => {
     }
 
 
-    const UserData=JSON.parse(localStorage.getItem("User-Data"))
-    const userEmail=UserData.find((u)=>u.email===form.email)
-     const userPassword=UserData.find((u)=>u.password===form.password)
+    const UserData=JSON.parse(localStorage.getItem("User-Data")) || [];
 
+    const user=UserData.find((u)=>u.email===form.email)
+     
 
-    
-    if(!userEmail){
+    if(!user){
       return toast.error("User not found with this email")
     }
-    if(!userPassword){
+    if(user.password !== form.password){
       return toast.error("Password does not match")
     }
+
+    localStorage.setItem("email", user.email);
+
   toast.success("Login successful");
   setTimeout(() => {
         navigate("/notes" ,{replace:true});
